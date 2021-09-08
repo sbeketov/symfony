@@ -1,0 +1,43 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: '3.1'
+services:
+
+    nginx_app:
+        image: 'nginx:alpine'
+        working_dir: /var/www
+        volumes:
+            - '.:/var/www'
+            - './docker/nginx/app/default.conf:/etc/nginx/conf.d/default.conf'
+        ports:
+            - '127.0.0.1:80:80'
+        depends_on:
+            - php_app
+        container_name: symfony-web-server
+        networks:
+            test-network:
+                ipv4_address: 192.168.224.2
+
+    php_app:
+        build:
+            context: docker/php
+            dockerfile: app/Dockerfile
+        working_dir: /var/www
+        volumes:
+            - '.:/var/www'
+            - './docker/php/app/php.ini:/usr/local/etc/php/php.ini'
+        environment:
+            PHP_IDE_CONFIG: "serverName=Docker"
+        container_name: symfony-php
+        networks:
+            test-network:
+                ipv4_address: 192.168.224.3
+networks:
+    test-network:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.224.0/28
+
