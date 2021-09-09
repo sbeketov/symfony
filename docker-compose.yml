@@ -33,6 +33,19 @@ services:
         networks:
             test-network:
                 ipv4_address: 192.168.224.3
+    database:
+        image: postgres:13-alpine
+        environment:
+            POSTGRES_USER: main
+            POSTGRES_PASSWORD: main
+            POSTGRES_DB: main
+        ports:
+            - '127.0.0.1:5432:5432'
+        container_name: symfony-postgres
+        networks:
+            test-network:
+                ipv4_address: 192.168.224.4
+
 networks:
     test-network:
         driver: bridge
