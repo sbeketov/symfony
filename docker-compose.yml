@@ -15,9 +15,6 @@ services:
         depends_on:
             - php_app
         container_name: symfony-web-server
-        networks:
-            test-network:
-                ipv4_address: 192.168.224.2
 
     php_app:
         build:
@@ -30,9 +27,7 @@ services:
         environment:
             PHP_IDE_CONFIG: "serverName=Docker"
         container_name: symfony-php
-        networks:
-            test-network:
-                ipv4_address: 192.168.224.3
+
     database:
         image: postgres:13-alpine
         environment:
@@ -42,15 +37,8 @@ services:
         ports:
             - '127.0.0.1:5432:5432'
         container_name: symfony-postgres
-        networks:
-            test-network:
-                ipv4_address: 192.168.224.4
 
-networks:
-    test-network:
-        driver: bridge
-        ipam:
-            driver: default
-            config:
-                - subnet: 192.168.224.0/28
+    mailer:
+        image: schickling/mailcatcher
+        ports: [1025, 1080]
 

@@ -19,3 +19,7 @@
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+
+###> test commands ###
+/src/Command/Test*.php
+###< test commands ###
